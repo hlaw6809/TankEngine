@@ -1,7 +1,9 @@
 package util;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
-import model.ImageMapEnum;
+import javafx.scene.image.WritableImage;
+import model.SpriteMapItem;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,25 +15,32 @@ public class SpriteParser {
 
     private SpriteParser() {}
 
-    public HashMap<ImageMapEnum, Image> parse(String filePath) {
-        DefaultImageMap[] sections = DefaultImageMap.values();
-        HashMap values = new HashMap(sections.length + 1, 1);
+    public static HashMap<String, Image> parse(String filePath) {
+        ////Not Yet Implemented
+        HashMap values = new HashMap<String, Image>();
         return values;
     }
 
-    public HashMap<ImageMapEnum, Image> parse(String filePath, Class<? implements ImageMapEnum> customImageMap) {
-        ImageMapEnum[] sections = customImageMap.values();
-        HashMap values = new HashMap(sections.length + 1, 1);
+    public static HashMap<String, Image> parse(String filePath,  SpriteMapItem[] imageMapItems) {
+        Image img = getImageFromFile(filePath);
+        HashMap values = breakImage(img, imageMapItems);
         return values;
     }
 
-    private Image getImageFromFile(String filePath) {
+    private static Image getImageFromFile(String filePath) {
         File file = new File(filePath);
         Image img = new Image(file.toURI().toString());
         return img;
     }
 
-    private HashMap<ImageMapEnum, Image> breakImage(Image img, ImageMapEnum imageMap) {
+    private static HashMap<String, Image> breakImage(Image img, SpriteMapItem[] mapItems) {
+        HashMap map = new HashMap<String, Image>();
+        for (int i = 0; i < mapItems.length; i++) {
+            SpriteMapItem mapItem = mapItems[i];
+            Point2D start = mapItem.getStartPoint();
+            WritableImage image = new WritableImage(img.getPixelReader(), (int) start.getX(), (int) start.getY(), mapItem.getWidth(), mapItem.getHeight());
+            map.put(mapItem.getName(), image);
+        }
         return null;
     }
 
