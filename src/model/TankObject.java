@@ -72,8 +72,8 @@ public class TankObject {
         graphic = newGraphic;
     }
 
-    public void tick(TankConfiguration config) {
-        onTick.tick(this, config);
+    public void tick(TankBoard board, TankConfiguration config) {
+        onTick.tick(this, board, config);
     }
 
 }

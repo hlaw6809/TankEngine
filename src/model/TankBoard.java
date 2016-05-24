@@ -11,7 +11,7 @@ import java.util.Collection;
  * Created by Henry on 4/12/2016.
  */
 public class TankBoard {
-    private ArrayList<TankObjectView> tankObjects;
+    private ArrayList<TankObject> tankObjects;
     private Dimension2D size;
     private Object userData;
     private Image background;
@@ -23,8 +23,9 @@ public class TankBoard {
         this.size = size;
         this.background = background;
         this.userData = userData;
+        this.tankObjects = new ArrayList<TankObject>();
         for (TankObject o: tankObjects) {
-            this.tankObjects.add(new TankObjectView(o));
+            this.tankObjects.add(o);
         }
     }
 
@@ -36,12 +37,12 @@ public class TankBoard {
         this.userData = userData;
     }
 
-    public ArrayList<TankObjectView> getObjects() {
+    public ArrayList<TankObject> getObjects() {
         return tankObjects;
     }
 
     public void addObject(TankObject toAdd) {
-        tankObjects.add(new TankObjectView(toAdd));
+        tankObjects.add(toAdd);
     }
 
     public void removeObject(TankObject toRemove) {
@@ -77,8 +78,8 @@ public class TankBoard {
     }
 
     public void tick(TankConfiguration config) {
-        for (TankObjectView ov: tankObjects) {
-            ov.getTObject().tick(config);
+        for (TankObject ov: tankObjects) {
+            ov.tick(this, config);
         }
     }
 }

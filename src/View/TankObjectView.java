@@ -5,20 +5,27 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.TankObject;
 
 /**
  * Created by Henry on 4/12/2016.
  */
-public class TankObjectView extends Canvas {
+public class TankObjectView extends ImageView {
 
     TankObject tObject;
 
     Image drawnImage;
 
     public TankObjectView(TankObject tObject) {
-        super(tObject.getSize().getWidth(), tObject.getSize().getHeight());
+        super(tObject.getGraphic());
         this.tObject = tObject;
+        this.drawnImage = tObject.getGraphic();
+        setFitHeight(tObject.getSize().getHeight());
+        setFitWidth(tObject.getSize().getWidth());
+        //background.setPreserveRatio(true);
+        setX(tObject.getLocation().getX());
+        setY(tObject.getLocation().getY());
     }
 
     public TankObject getTObject() {
@@ -29,15 +36,10 @@ public class TankObjectView extends Canvas {
         this.tObject = tObject;
     }
 
-    public void draw() {
-        //Check for need to redraw
-        if (drawnImage == null || drawnImage != tObject.getGraphic()) {
-            Image img = tObject.getGraphic();
-            Dimension2D size = tObject.getSize();
-            Point2D location = tObject.getLocation();
-            GraphicsContext gc = this.getGraphicsContext2D();
-            gc.drawImage(img, location.getX(), location.getY(), size.getWidth(), size.getHeight());
-            drawnImage = img;
+    public void redraw() {
+        Image newImage = tObject.getGraphic();
+        if (!newImage.equals(drawnImage)) {
+            this.setImage(newImage);
         }
     }
 }
